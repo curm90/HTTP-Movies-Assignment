@@ -12,15 +12,28 @@ const UpdateMovieForm = props => {
 
   const movieToEdit = () => {
     const id = props.match.params.id;
-    const movieMatch = props.movies.find(movie => `${movie.id}` === id);
+    const movieMatch = props.movies.find(movie => movie.id.toString() === id);
 
     if (movieMatch) {
       setMovieForm(movieMatch);
     }
   };
 
-  const handleInputChange = e => {
+  const handleMovieInputChange = e => {
     setMovieForm({ ...movieForm, [e.target.name]: e.target.value });
+  };
+
+  const handleStarsInputChange = (e, index) => {
+    const updatedStars = movieForm.stars.map((star, i) => {
+      if (i === index) {
+        return e.target.value;
+      }
+      return star;
+    });
+    setMovieForm({
+      ...movieForm,
+      stars: updatedStars
+    });
   };
 
   const handleSubmit = e => {
@@ -43,30 +56,32 @@ const UpdateMovieForm = props => {
           type='text'
           name='title'
           placeholder='Title'
-          onChange={handleInputChange}
+          onChange={handleMovieInputChange}
           value={movieForm.title}
         />
         <input
           type='text'
           name='director'
           placeholder='Director'
-          onChange={handleInputChange}
+          onChange={handleMovieInputChange}
           value={movieForm.director}
         />
         <input
           type='text'
           name='metascore'
           placeholder='Metascore'
-          onChange={handleInputChange}
+          onChange={handleMovieInputChange}
           value={movieForm.metascore}
         />
-        <input
-          type='text'
-          name='stars'
-          placeholder='Stars'
-          onChange={handleInputChange}
-          value={movieForm.stars}
-        />
+        {movieForm.stars.map((star, i) => (
+          <input
+            type='text'
+            name='stars'
+            placeholder='Stars'
+            onChange={e => handleStarsInputChange(e, i)}
+            value={star}
+          />
+        ))}
         <button>Update Movie</button>
       </form>
     </div>
