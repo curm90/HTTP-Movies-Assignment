@@ -31,7 +31,7 @@ const UpdateMovieForm = props => {
       .then(res => {
         props.updateMovies(res.data);
         setMovieForm(initialFormValues);
-        props.history.push(`/movies/${props.match.params.id}`);
+        props.history.push(`/`);
       })
       .catch(err => console.log(err));
   };

@@ -32,6 +32,15 @@ const App = () => {
     setMovies(updatedMovies);
   };
 
+  const handleDeleteMovie = id => {
+    axios
+      .delete(`http://localhost:5000/api/movies/${id}`)
+      .then(res => {
+        setMovies(movies.filter(movie => movie.id !== res.data));
+      })
+      .catch(err => console.log(err));
+  };
+
   return (
     <>
       <SavedList list={savedList} />
@@ -43,7 +52,13 @@ const App = () => {
       <Route
         path='/movies/:id'
         render={props => {
-          return <Movie {...props} addToSavedList={addToSavedList} />;
+          return (
+            <Movie
+              {...props}
+              addToSavedList={addToSavedList}
+              handleDeleteMovie={handleDeleteMovie}
+            />
+          );
         }}
       />
       <Route
